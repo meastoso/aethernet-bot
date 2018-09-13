@@ -1,0 +1,25 @@
+{
+  "name": "aethernet-bot",
+  "version": "1.0.0",
+  "description": "Twitch bot used by the Aethernet Stream team on Twitch",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meastoso/aethernet-bot.git"
+  },
+  "author": "meastoso",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meastoso/aethernet-bot/issues"
+  },
+  "homepage": "https://github.com/meastoso/aethernet-bot#readme",
+  "dependencies": {
+    "aws-sdk": "2.121.0",
+    "express": "4.16.1",
+    "node-rest-client": "3.1.0",
+    "twitch-js": "1.2.14"
+  }
+}
