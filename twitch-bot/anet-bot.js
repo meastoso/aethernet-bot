@@ -32,8 +32,8 @@ catch (err) {
  * 
  */
 
-var channels = ['meastoso', 'arcaneSeamstress'];
-//var channels = team.getMembers();
+//var channels = ['meastoso', 'arcaneSeamstress'];
+var channels = team.getMembers();
 var username = 'aethernet_bot';
 var password = twitchCredentials['aethernet-bot'];
 var options = {
