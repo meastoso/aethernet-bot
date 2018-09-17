@@ -5,6 +5,7 @@ var fs = require('fs');
 const team = require('../team/team-members.js');
 const pointsManager = require('../points/pointsManager.js');
 const chatHandler = require('../chat/chatHandler.js');
+const testModeManager = require('../twitch-bot/testModeManager.js');
 
 /*
 * Fetch twitch oath credentials from local file
@@ -26,14 +27,19 @@ catch (err) {
  			- (done) move raffle code from chat handler to raffle module
  			- (done) make a better scheduler system to figure out the current live user
    2.5. Copy schedule into google calendar
- * 3. Push bot to repo with feature parity
- * 4. figure out how to persist the user points in a datastorage (s3, dynamo, etc.)
+ * 3. (done) Push bot to repo with feature parity
+ * 4. (done) figure out how to persist the user points in a datastorage (s3, dynamo, etc.)
  * 5. expose points API to be used on our website??? is this even useful? what can a user do on the website they can't do in twitch chat?
+   6. Optimize client to only login to channel that is "live"
+   7. allocate aws hardware
  * 
  */
 
-//var channels = ['meastoso', 'arcaneSeamstress'];
-var channels = team.getMembers();
+const testMode = testModeManager.isTestMode();
+let channels = team.getMembers();
+if (testMode) {
+	channels = ['meastoso', 'arcaneSeamstress'];
+}
 var username = 'aethernet_bot';
 var password = twitchCredentials['aethernet-bot'];
 var options = {

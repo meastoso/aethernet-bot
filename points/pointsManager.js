@@ -1,11 +1,15 @@
 const restClient = require('node-rest-client').Client;
 const theRestClient = new restClient();
 const scheduleManager = require('../schedule/scheduleManager.js');
+const animaPointsDAO = require('../s3/animaPointsDAO.js');
+const testModeManager = require('../twitch-bot/testModeManager.js');
 
 var viewerPointsMap = {};
+const testMode = testModeManager.isTestMode();
 
 const updateViewerPoints = function() {
-	console.log('inside updateViewerPoints function');	
+	console.log('inside updateViewerPoints function');
+	viewerPointsMap = animaPointsDAO.getCurrentAnimaCache();
 	//var currentLiveChannel = getLiveUserFromSchedule().toLowerCase();
 	//const currentLiveChannel = scheduleManager.getLiveUserFromSchedule().toLowerCase();
 	scheduleManager.getLiveUserFromSchedule()
@@ -17,8 +21,10 @@ const updateViewerPoints = function() {
 			const url = "http://tmi.twitch.tv/group/user/" + currentLiveChannel + "/chatters";
 			theRestClient.get(url, function (data, response) {
 				try {
-					console.log('got back the following data for url: ' + url);
-					console.log(data);
+					if (testMode) {
+						console.log('got back the following data for url: ' + url);
+						console.log(data);
+					}
 					var chatters = data.chatters;
 					var noOverlapMap = {}; // used to make sure people aren't counted twice if they are multiple types of chatters
 					if (chatters != undefined && chatters != null) {
@@ -39,8 +45,11 @@ const updateViewerPoints = function() {
 				    		}
 				    	}
 					}
-					console.log('finished point updates, map is:');
-					console.log(viewerPointsMap);
+					if (testMode) {
+						console.log('finished point updates, map is:');
+						console.log(viewerPointsMap);	
+					}
+					animaPointsDAO.updateCurrentAnima(viewerPointsMap);
 				}
 				catch (err) {
 			    	console.log('CAUGHT ERROR RUNNING updateViewerPoints():');
@@ -55,31 +64,38 @@ const updateViewerPoints = function() {
 }
 
 const removePoints = function(username, pointsToRemove) {
-	var currentPoints = viewerPointsMap[username];
+	var currentViewPointsMap = animaPointsDAO.getCurrentAnimaCache();
+	var currentPoints = currentViewPointsMap[username];
 	if (currentPoints != undefined || currentPoints != null) {
 		var newPointTotal = parseInt(currentPoints, 10) - pointsToRemove;
-		viewerPointsMap[username] = newPointTotal;
+		currentViewPointsMap[username] = newPointTotal;
+		animaPointsDAO.updateCurrentAnima(viewerPointsMap);
 	}
 }
 
 const addAnima = function(username, amount) {
-	var points = viewerPointsMap[username];
+	var currentViewPointsMap = animaPointsDAO.getCurrentAnimaCache();
+	var points = currentViewPointsMap[username];
 	if (points == undefined || points == null) {
 		points = 0;
 	}
-	viewerPointsMap[username] = parseInt(points, 10) + parseInt(amount, 10);
+	currentViewPointsMap[username] = parseInt(points, 10) + parseInt(amount, 10);
+	animaPointsDAO.updateCurrentAnima(viewerPointsMap);
 }
 
 const getPoints = function(username) {
-	var points = viewerPointsMap[username];
+   var currentViewPointsMap = animaPointsDAO.getCurrentAnimaCache();
+	var points = currentViewPointsMap[username];
 	if (points == undefined || points == null) {
 		points = 0;
 	}
 	return points;
 }
 
-const updateViewerPointsInterval = 900000; // 15-minutes
-//var updateViewerPointsInterval = 10000; // used for testing
+let updateViewerPointsInterval = 900000; // 15-minutes
+if (testMode) {
+	updateViewerPointsInterval = 10000; // 10 seconds for testing
+}
 const getUpdateIntervalMS = function() {
 	return updateViewerPointsInterval;
 }

@@ -2,7 +2,6 @@ const team = require('../team/team-members.js');
 const testModeManager = require('../twitch-bot/testModeManager.js');
 const pointsManager = require('../points/pointsManager.js');
 const raffleSystem = require('../raffle/raffleSystem.js');
-const whocares = 'whocares';
 
 const testMode = testModeManager.isTestMode();
 
