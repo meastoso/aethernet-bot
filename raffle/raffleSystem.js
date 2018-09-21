@@ -1,6 +1,7 @@
 const pointsManager = require('../points/pointsManager.js');
 
 var raffleOpen = false;
+var drawTicketUsed = false;
 
 // helper function
 function getRandomInt(max) {
@@ -47,6 +48,7 @@ const drawWinnerAndReturnMessage = function() {
 	}
 	var percentChance = Math.round((winnerNumberTickets / totalEntries * 1.0) * 100);
 	var responseMsg = "With " + totalEntries + " total entries and " + percentChance + "% chance of winning, CONGRATULATIONS " + winnerUsername + " !";
+	drawTicketUsed = true;
 	return responseMsg;
 }
 
@@ -54,8 +56,13 @@ const isRaffleOpen = function() {
 	return raffleOpen;
 }
 
+const hasDrawTicketBeenUsed = function() {
+	return drawTicketUsed;
+}
+
 const openRaffle = function() {
 	raffleOpen = true;
+	drawTicketUsed = false; // reset this
 }
 
 const closeRaffle = function() {
@@ -69,5 +76,6 @@ module.exports = {
 		drawWinnerAndReturnMessage: drawWinnerAndReturnMessage,
 		isRaffleOpen: isRaffleOpen,
 		openRaffle: openRaffle,
-		closeRaffle: closeRaffle
+		closeRaffle: closeRaffle,
+		hasDrawTicketBeenUsed: hasDrawTicketBeenUsed
 }

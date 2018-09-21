@@ -59,6 +59,7 @@ var options = {
 
 var client = new TwitchJS.client(options);
 console.log("Attempting to log into channels with username: " + username);
+console.log('CHRIS LATEST TEST!');
 client.connect();
 
 // kick off infinite loop of calling updatePoints();

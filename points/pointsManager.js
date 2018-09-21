@@ -69,7 +69,7 @@ const removePoints = function(username, pointsToRemove) {
 	if (currentPoints != undefined || currentPoints != null) {
 		var newPointTotal = parseInt(currentPoints, 10) - pointsToRemove;
 		currentViewPointsMap[username] = newPointTotal;
-		animaPointsDAO.updateCurrentAnima(viewerPointsMap);
+		animaPointsDAO.updateCurrentAnima(currentViewPointsMap);
 	}
 }
 
@@ -80,7 +80,7 @@ const addAnima = function(username, amount) {
 		points = 0;
 	}
 	currentViewPointsMap[username] = parseInt(points, 10) + parseInt(amount, 10);
-	animaPointsDAO.updateCurrentAnima(viewerPointsMap);
+	animaPointsDAO.updateCurrentAnima(currentViewPointsMap);
 }
 
 const getPoints = function(username) {

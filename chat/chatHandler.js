@@ -74,7 +74,7 @@ const handleMsg = function(client, channel, user, message) {
 				return;
 			}
 			// ALL GOOD TO GO
-			pointsManager.addAnima(userToModify, amountToAdd);
+			pointsManager.addAnima(userToModify.toLowerCase(), amountToAdd);
 			responseMsg = "Successfully added " + amountToAdd + " anima to " + userToModify;
 			client.say(channel, responseMsg);
 		}
@@ -91,6 +91,7 @@ const handleMsg = function(client, channel, user, message) {
 		else if (username === channelName && message.startsWith("!raffle")) { // only channel owner can start this
 			// figure out if user is starting a raffle or ending a raffle
 			const isRaffleOpen = raffleSystem.isRaffleOpen();
+			const drawTicketUsed = raffleSystem.hasDrawTicketBeenUsed();
 			var cmdModifier = message.split('!raffle ')[1];
 			if (cmdModifier == undefined || cmdModifier == null || (cmdModifier.toLowerCase() != 'start' && cmdModifier.toLowerCase() != 'end')) {
 				var responseMsg = "Incorrect usage of the !raffle command. Please include 'start' or 'end' after the command, i.e. !raffle start";
@@ -106,6 +107,12 @@ const handleMsg = function(client, channel, user, message) {
 			// if end, check that a raffle is currently in progress
 			if (cmdModifier.toLowerCase() == 'end' && !isRaffleOpen) {
 				var responseMsg = "There are currently no raffles open.";
+				client.say(channel, responseMsg);
+				return;
+			}
+			// if end and streamer hasn't drawn a winner, prevent this from accidently ending before they mean to
+			if (cmdModifier.toLowerCase() == 'end' && !drawTicketUsed) {
+				var responseMsg = "To prevent irreversible anima loss you cannot end a raffle before using !drawticket to select and announce a winner. If this was intentional please contact @meastoso.";
 				client.say(channel, responseMsg);
 				return;
 			}
@@ -147,8 +154,14 @@ const handleMsg = function(client, channel, user, message) {
 		 * ##########################*/
 		else if (message.startsWith("!buytickets")) {
 			const isRaffleOpen = raffleSystem.isRaffleOpen();
+			const drawTicketUsed = raffleSystem.hasDrawTicketBeenUsed();
 			if (!isRaffleOpen) {
 				var responseMsg = 'There are no raffles currently open.';
+				client.say(channel, responseMsg);
+				return;
+			}
+			else if (drawTicketUsed) {
+				var responseMsg = 'You cannot buy tickets once a winner has been drawn.';
 				client.say(channel, responseMsg);
 				return;
 			}
