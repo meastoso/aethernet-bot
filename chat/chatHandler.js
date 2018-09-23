@@ -177,6 +177,11 @@ const handleMsg = function(client, channel, user, message) {
 				client.say(channel, responseMsg);
 				return;
 			}
+			if (ticketAmount < 1) {
+				var responseMsg = 'Nice try, ' + username + ' but no dice.';
+				client.say(channel, responseMsg);
+				return;
+			}
 			const successResponseMsg = raffleSystem.buyTickets(username, parseInt(ticketAmount, 10));
 			client.say(channel, successResponseMsg);
 		}
