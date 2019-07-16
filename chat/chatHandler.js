@@ -2,10 +2,16 @@ const team = require('../team/team-members.js');
 const testModeManager = require('../twitch-bot/testModeManager.js');
 const pointsManager = require('../points/pointsManager.js');
 const raffleSystem = require('../raffle/raffleSystem.js');
+const scheduleManager = require('../schedule/scheduleManager.js');
 
 const testMode = testModeManager.isTestMode();
+let currentRetweetLink = '';
 
 const handleMsg = function(client, channel, user, message) {
+	/*if (!scheduleManager.getLiveUserCached()) {
+		console.log('************ NO LIVE USER, IGNORING COMMANDS! ****************');
+		return;
+	}*/
 	try {
 		var username = user['username'];
 		var channelName = channel.split('#')[1];
@@ -36,7 +42,7 @@ const handleMsg = function(client, channel, user, message) {
 		 *      !anetcommands
 		 * ##########################*/
 		else if (message.startsWith("!anetcommands")) {
-			var responseMsg = 'Available commands for the Aethernet Bot are: !website, !hype, !anima, !prizes and !buytickets';
+			var responseMsg = 'Available commands for the Aethernet Bot are: !website, !hype, !anima, !prizes, !live, !schedule and !buytickets';
 			client.say(channel, responseMsg);
 		}
 		/* ###########################
@@ -48,7 +54,7 @@ const handleMsg = function(client, channel, user, message) {
 			client.say(channel, responseMsg);
 		}
 		/* ###########################
-		 *      !addanima <amount>
+		 *      !addanima <username <amount>
 		 * ##########################*/
 		else if (username === channelName && message.startsWith("!addanima")) {
 			function isInt(value) {
@@ -82,9 +88,16 @@ const handleMsg = function(client, channel, user, message) {
 		 *      !prizes
 		 * ##########################*/
 		else if (message.startsWith("!prizes")) {
-			var responseMsg = "The Aethernet's 4.4 Patch Event includes so many Giveaways it will make your head spin! Prizes include Mounts, Glamours and Emotes from Mogstation, FFXIV Time Cards and more!";
+			var responseMsg = "The Aethernet's Shadowbringers Marathon Event includes so many Giveaways it will make your head spin! Prizes include Mounts, Glamours and Emotes from Mogstation, FFXIV Time Cards and more!";
 			client.action(channel, responseMsg);
 		}
+        /* ###########################
+         *      !schedule
+         * ##########################*/
+        else if (message.startsWith("!schedule")) {
+            var responseMsg = "The Aethernet's 5.0 Shadowbringers marathon schedule can be found here: https://twitter.com/TheAethernet/status/1084538503986176000";
+            client.action(channel, responseMsg);
+        }
 		/* ###########################
 		 *      !raffle <start|end>
 		 * ##########################*/
@@ -182,7 +195,7 @@ const handleMsg = function(client, channel, user, message) {
 				client.say(channel, responseMsg);
 				return;
 			}
-			const successResponseMsg = raffleSystem.buyTickets(username, parseInt(ticketAmount, 10));
+			const successResponseMsg = raffleSystem.buyTickets(username, parseInt(ticketAmount, 10), pointsManager);
 			client.say(channel, successResponseMsg);
 		}
 		/* ###########################
@@ -198,7 +211,7 @@ const handleMsg = function(client, channel, user, message) {
 			var secondMsg = message.split('!testbuytickets ')[1];
 			var username = secondMsg.split(' ')[0];
 			var ticketAmount = secondMsg.split(' ')[1];
-			raffleSystem.buyTickets(username, parseInt(ticketAmount, 10));
+			raffleSystem.buyTickets(username, parseInt(ticketAmount, 10), pointsManager);
 		}
 		/* ###########################
 		 *      !remove <user>
@@ -219,6 +232,55 @@ const handleMsg = function(client, channel, user, message) {
 				client.say(channel, responseMsg);
 			}
 		}
+        /* ###########################
+         *      !live
+         * ##########################*/
+        else if (message.startsWith("!live")) {
+            const currentLiveUser = scheduleManager.getLiveUserCached();
+            var responseMsg = 'The Aethernet Shadowbringers Marathon is Live at https://twitch.tv/' + currentLiveUser;
+            client.say(channel, responseMsg);
+        }
+        /* ###########################
+         *      !currency
+         * ##########################*/
+        else if (message.startsWith("!currency")) {
+            var responseMsg = 'During the Aethernet Shadowbringers Marathon earn 1 !anima for every 15 minutes watching the current ' +
+				'!live streamer and spend your !anima on raffle tickets to enter to win our giveaways throughout the marathon!';
+            client.say(channel, responseMsg);
+        }
+        /* ###########################
+         *      !settweet
+         * ##########################*/
+        else if (message.startsWith("!settweet ") && team.isMember(username)) {
+        	const tweetLink = message.split('!settweet ')[1];
+        	if (!tweetLink) {
+        		console.log('User ' + username + ' tried to set tweet with the following message: ' + message + ' but the parsed tweet link was undefined or empty.');
+        		return;
+			}
+        	const tweetId = tweetLink.split('/status/')[1]; // the ID of the tweet
+			if (!tweetId) {
+                var responseMsg = 'Invalid tweet format, please copy/paste the URL of a specific tweet for example: https://twitter.com/TheAethernet/status/1082358034372820992';
+                client.say(channel, responseMsg);
+                return;
+			}
+            currentRetweetLink = 'https://twitter.com/intent/retweet?tweet_id=' + tweetId;
+            var responseMsg = 'Latest Tweet set, use !tweet to get the latest retweet link';
+            client.say(channel, responseMsg);
+        }
+        /* ###########################
+         *      !tweet -or- !retweet
+         * ##########################*/
+        else if (message.startsWith("!tweet") || message.startsWith("!retweet")) {
+            var responseMsg = 'Thank you for retweeting our Aethernet status: ' + currentRetweetLink;
+            client.say(channel, responseMsg);
+        }
+        /* ###########################
+         *      !rigged
+         * ##########################*/
+        else if (message.startsWith("!rigged")) {
+            var responseMsg = 'Meastoso has arrived with the receipts, please verify randomness yourself henny: https://github.com/meastoso/aethernet-bot';
+            client.say(channel, responseMsg);
+        }
 	}
 	catch(error) {
 		console.log("ERROR: " + error);

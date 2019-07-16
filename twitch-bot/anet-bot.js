@@ -19,6 +19,40 @@ catch (err) {
 	console.log(err);
 }
 
+
+// NOTE: The following data is useful to collect statistics after the marathon
+/*var lineReader = require('readline').createInterface({
+  input: require('fs').createReadStream('nodejs.log2')
+});
+
+let numGiveaways = 0;
+let numTotalRaffleEntries = 0;
+let lastNumber = 0;
+let riggedUsage = 0;
+lineReader.on('line', function (line) {
+  // console.log('Line from file:', line);
+  if (line.indexOf('chance of winning, CONGRATULATIONS') > 0) {
+      numGiveaways++;
+      console.log('number of giveaways: ' + numGiveaways);
+      const firstSlice = line.substring(line.indexOf(': With ') + 7, line.length);
+      // console.log('firstSlice: ' + firstSlice);
+      const strNumberEntries = firstSlice.substring(0, firstSlice.indexOf(' total entries'));
+      // console.log('strNumberEntries: ' + strNumberEntries);
+      const numEntries = parseInt(strNumberEntries, 10);
+      if (numEntries !== lastNumber) {
+          numTotalRaffleEntries += numEntries;
+      }
+      lastNumber = numEntries;
+      console.log('numTotalRaffleEntries: ' + numTotalRaffleEntries);
+  }
+  if (line.indexOf('!rigged') > 0) {
+      riggedUsage++;
+      console.log('riggedUsage: ' + riggedUsage);
+  }
+});*/
+// console.log('numTotalRaffleEntries is:');
+// console.log(numTotalRaffleEntries);
+
 /*
  * TODO:
  * 
@@ -38,8 +72,9 @@ catch (err) {
 const testMode = testModeManager.isTestMode();
 let channels = team.getMembers();
 if (testMode) {
-	channels = ['meastoso', 'arcaneSeamstress'];
+	channels = ['meastoso'];
 }
+
 var username = 'aethernet_bot';
 var password = twitchCredentials['aethernet-bot'];
 var options = {
@@ -68,7 +103,7 @@ const callPointsManager = function() {
 	const updateInterval = pointsManager.getUpdateIntervalMS();
 	setTimeout(callPointsManager, updateInterval)
 };
-callPointsManager(); // TODO: restore this
+// callPointsManager(); // TODO: restore this
 
 client.on("emotesets", function(sets, obj) {
 	//console.log('emote sets:');
@@ -76,14 +111,29 @@ client.on("emotesets", function(sets, obj) {
 	team.updateHypeCommand(sets, obj);
 });
 
-/**
- * Function to parse chat message for bot commands
- */
+// Function to parse chat message for bot commands
 client.on('chat', function(channel, user, message, self) {
 	if (self) return;
 	chatHandler.handleMsg(client, channel, user, message);
 });
 
+/*const token = twitchCredentials['aethernet-bot'];
+const username = 'aethernet_bot';
 
+const channel = 'meastoso'; // TODO: get this dynamically
+
+// Instantiate clients.
+const { api, chat, chatConstants } = new TwitchJs({ token, username });
+
+// Listen to all events.
+const log = msg => console.log(msg);
+chat.on(chatConstants.EVENTS.ALL, log);
+
+// Connect ...
+chat.connect().then(() => {
+    // ... and then join the channel.
+    chat.join(channel);
+    console.log('just joined the channel!');
+});*/
 
 

@@ -1,20 +1,20 @@
 // ENUM where field is member name and property value is HYPE emote to be used
 const members = {
-	'spofie': 'sofieHype',
-	'pookajutsu': 'pkjP',
+	'spofie': 'sofiePog',
+	'pookajutsu': 'pkjPantsu',
 	'josgar': 'thejosPride',
 	'shamanom': 'shamanLove',
-	'arcaneseamstress': 'arcane2Snarky',
+	'arcaneseamstress': 'arcane2Good',
 	'healmeharry': 'hmeHype',
-	'fooga': 'fuganoSing',
-	'meastoso': 'meastoDaddy',
-	'crevlm': 'crevlmSalute',
+	'phoenixchao': 'fuganoSing',
+	'meastoso': 'meastoLove',
+	'crevlm': 'crevlmHype',
 	'tequilashots1500': 'tequil3Cheers',
-	'iselenis': 'iselenLove',
-	'missrogueflame': 'therog3Love',
+	'missrogueflame': 'therog3Hype',
 	'cyaniablu': 'cyanLove',
-	'avalonstar': 'avalonHYPE',
-	'goldentot': 'totHYPE',
+	'tuatime': 'tuaLove',
+	'amalirae': 'amalirHype',
+	'seikachu': 'seiLove'
 }
 
 let hypeMsg = '';
@@ -74,10 +74,15 @@ const getHypeStr = function() {
 	return hypeMsg;
 }
 
+const isMember = function(username) {
+	return members[username] !== undefined;
+}
+
 // public methods
 module.exports = {
 		getMembers: getMembers,
 		getEmotes: getEmotes,
 		updateHypeCommand: updateHypeCommand,
 		getHypeStr: getHypeStr,
+		isMember: isMember,
 }

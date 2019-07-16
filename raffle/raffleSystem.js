@@ -1,4 +1,4 @@
-const pointsManager = require('../points/pointsManager.js');
+// const pointsManager = require('../points/pointsManager.js');
 
 var raffleOpen = false;
 var drawTicketUsed = false;
@@ -10,9 +10,9 @@ function getRandomInt(max) {
 
 let raffleTicketContainer = []; // could contain multiple if people buy more than 1 ticket
 // function used to spend anima on tickets
-const buyTickets = function(username, ticketAmount) {
+const buyTickets = function(username, ticketAmount, pointsManager) {
 	// check if user has the points
-	console.log('inside buytTickets() function!');
+	console.log('inside buytTickets() function! username is: ' + username + ' ticketAmount is: ' + ticketAmount);
 	var userPointTotal = pointsManager.getPoints(username);
 	const ticketCostInAnima = 1;
 	if (userPointTotal < ticketCostInAnima) {

@@ -11,7 +11,7 @@ const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./credentials'); 
 const s3 = new AWS.S3();
 const animaBucket = 'aethernet-anima-backup';
-const configKey = 'anima-patch-4-4';
+const configKey = 'anima-patch-5-0';
 
 let animaCache = {};
 
@@ -57,13 +57,39 @@ const updateCurrentAnima = function(updatedAnimaTotalsObj) {
 getCurrentAnima()
 	.then((animaTotalsObj) => {
 		console.log('Successfully current anima at startup...');
-		console.log(animaTotalsObj);
+		// console.log(animaTotalsObj);
 		animaCache = animaTotalsObj;
 	})
 	.catch((err) => {
 		console.log('Error when trying to get current anima at startup...');
 		console.log(err);
 	});
+
+//console.log('RESETTING ALL ANIMA RIGHT NOW!');
+//updateCurrentAnima({});
+
+
+// NOTE: The code below is useful when trying to get unique users for stats after the marathon
+getCurrentAnima()
+    .then((animaTotalsObj) => {
+        console.log('Successfully current anima at startup...');
+        //console.log(animaTotalsObj);
+        animaCache = animaTotalsObj;
+        //console.log('animaCache is:');
+        console.log('Number of unique viewers: ' + Object.keys(animaCache).length);
+        var totalCurrentAnima = 0;
+        for (var username in animaCache) {
+            if (animaCache.hasOwnProperty(username)) {
+                totalCurrentAnima += parseInt(animaCache[username], 10);
+            }
+        }
+        console.log('totalCurrentAnima is: ' + totalCurrentAnima);
+    })
+    .catch((err) => {
+        console.log('Error when trying to get current anima at startup...');
+        console.log(err);
+    });
+
 	
 const getCurrentAnimaCache = function() {
 	return animaCache;

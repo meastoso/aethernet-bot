@@ -1,4 +1,4 @@
-const testMode = false;
+const testMode = true;
 
 const isTestMode = function() {
 	return testMode;

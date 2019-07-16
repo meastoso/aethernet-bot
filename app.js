@@ -1,7 +1,10 @@
 var express = require('express');
+var cors = require('cors')
 var app = express();
+app.use(cors());
 const anetBot = require('./twitch-bot/anet-bot.js');
 const passportManager = require('./passport/passportManager.js');
+const scheduleManager = require('./schedule/scheduleManager.js');
 
 const passport = passportManager.getPassport();
 app.use(passport.initialize());
@@ -23,4 +26,30 @@ app.get('/auth/callback',
     console.log(req.user.accessToken);
     //res.redirect('/');
 	});
+
+app.get('/schedule', (req, res) => {
+    const date1 = new Date('July 15, 2019 00:00:00');
+    const date2 = new Date('July 31, 2019 00:00:00');
+    scheduleManager.getAllEventsForRange(date1, date2)
+        .then(function(allEvents) {
+            res.json(allEvents);
+        })
+        .catch(function(err) {
+            console.log('error getting dates from schedule manager:');
+            console.log(err);
+            res.json(err);
+        });
+});
+
+app.get('/liveUser', (req, res) => {
+    scheduleManager.getLiveUserFromSchedule()
+        .then(function(liveUser) {
+            res.json(liveUser);
+        })
+        .catch(function(err) {
+            console.log('error getting dates from schedule manager:');
+            console.log(err);
+            res.json(err);
+        });
+});
 
