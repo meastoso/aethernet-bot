@@ -65,8 +65,8 @@ getCurrentAnima()
 		console.log(err);
 	});
 
-//console.log('RESETTING ALL ANIMA RIGHT NOW!');
-//updateCurrentAnima({});
+// console.log('RESETTING ALL ANIMA RIGHT NOW!');
+// updateCurrentAnima({});
 
 
 // NOTE: The code below is useful when trying to get unique users for stats after the marathon

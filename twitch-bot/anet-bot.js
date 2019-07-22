@@ -103,7 +103,7 @@ const callPointsManager = function() {
 	const updateInterval = pointsManager.getUpdateIntervalMS();
 	setTimeout(callPointsManager, updateInterval)
 };
-// callPointsManager(); // TODO: restore this
+callPointsManager();
 
 client.on("emotesets", function(sets, obj) {
 	//console.log('emote sets:');

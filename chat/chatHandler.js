@@ -5,6 +5,7 @@ const raffleSystem = require('../raffle/raffleSystem.js');
 const scheduleManager = require('../schedule/scheduleManager.js');
 
 const testMode = testModeManager.isTestMode();
+const betaMode = testModeManager.isBetaMode();
 let currentRetweetLink = '';
 
 const handleMsg = function(client, channel, user, message) {
@@ -25,7 +26,7 @@ const handleMsg = function(client, channel, user, message) {
 		/* ###########################
 		 *      !hype
 		 * ##########################*/
-		else if (message.startsWith("!hype") && !testMode) {
+		else if (message.startsWith("!hype") && !testMode && !betaMode) {
 			const hypeMsg = team.getHypeStr();
 			var responseMsg = hypeMsg + hypeMsg;
          client.say(channel, responseMsg);
@@ -95,7 +96,7 @@ const handleMsg = function(client, channel, user, message) {
          *      !schedule
          * ##########################*/
         else if (message.startsWith("!schedule")) {
-            var responseMsg = "The Aethernet's 5.0 Shadowbringers marathon schedule can be found here: https://twitter.com/TheAethernet/status/1084538503986176000";
+            var responseMsg = "The Aethernet's 5.0 Shadowbringers marathon schedule can be found on our website! --> http://aethernet.tv <--";
             client.action(channel, responseMsg);
         }
 		/* ###########################
