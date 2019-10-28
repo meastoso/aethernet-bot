@@ -28,8 +28,8 @@ app.get('/auth/callback',
 	});
 
 app.get('/schedule', (req, res) => {
-    const date1 = new Date('July 15, 2019 00:00:00');
-    const date2 = new Date('July 31, 2019 00:00:00');
+    const date1 = new Date('October 27, 2019 00:00:00');
+    const date2 = new Date('November 6, 2019 00:00:00');
     scheduleManager.getAllEventsForRange(date1, date2)
         .then(function(allEvents) {
             res.json(allEvents);

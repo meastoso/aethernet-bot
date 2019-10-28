@@ -2,8 +2,7 @@
 const members = {
 	'spofie': 'sofiePog',
 	'pookajutsu': 'pkjPantsu',
-	'josgar': 'thejosPride',
-	'shamanom': 'shamanLove',
+	'josgar': 'josgarPride',
 	'arcaneseamstress': 'arcane2Good',
 	'healmeharry': 'hmeHype',
 	'phoenixchao': 'fuganoSing',
@@ -14,7 +13,8 @@ const members = {
 	'cyaniablu': 'cyanLove',
 	'tuatime': 'tuaLove',
 	'amalirae': 'amalirHype',
-	'seikachu': 'seiLove'
+	'seikachu': 'seiLove',
+	'rahhzay': 'rahhzOMG'
 }
 
 let hypeMsg = '';
