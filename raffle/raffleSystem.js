@@ -47,6 +47,9 @@ const drawWinnerAndReturnMessage = function() {
 		}
 	}
 	var percentChance = Math.round((winnerNumberTickets / totalEntries * 1.0) * 100);
+	if (percentChance == 0) {
+		percentChance = 1;
+	}
 	var responseMsg = "With " + totalEntries + " total entries and " + percentChance + "% chance of winning, CONGRATULATIONS " + winnerUsername + " !";
 	drawTicketUsed = true;
 	return responseMsg;
