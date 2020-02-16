@@ -1,6 +1,9 @@
 const gcal = require('google-calendar');
 const passportManager = require('../passport/passportManager.js');
 const raffleSystem = require('../raffle/raffleSystem.js');
+const testModeManager = require('../twitch-bot/testModeManager.js');
+const testMode = testModeManager.isTestMode();
+const betaMode = testModeManager.isBetaMode();
 
 const calendarId = "aethernetbot@gmail.com";
 let currentLiveUserCached = '';
@@ -29,8 +32,13 @@ const getLiveUserFromSchedule = function() {
 						// the live user has changed, close any open raffles
 						raffleSystem.closeRaffle();
 					}
-                    currentLiveUserCached = thisEvent.summary;
-					resolve(thisEvent.summary);
+					if (thisEvent && thisEvent.summary) {
+						currentLiveUserCached = thisEvent.summary.toLowerCase();
+					}
+					if (testMode || betaMode) {
+						console.log('currentLiveUserCached SUCCESS!: currentLiveUserCached is: ' + currentLiveUserCached);
+					}
+					resolve(currentLiveUserCached);
 					return;
 				}
 			}
@@ -68,6 +76,9 @@ const getAllEventsForRange = function(date1, date2) {
                     eventsInRange.push(thisEvent);
                 }
             }
+			if (testMode || betaMode) {
+				console.log('eventsInRange SUCCESS!: eventsInRange is: ' + eventsInRange);
+			}
             resolve(eventsInRange);
             // TODO SATURDAY:
 			// verify tht you can handle the error response that comes back if the unauthenticated thing happens

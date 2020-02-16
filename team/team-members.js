@@ -9,12 +9,13 @@ const members = {
 	'meastoso': 'meastoLove',
 	'crevlm': 'crevlmHype',
 	'tequilashots1500': 'tequil3Cheers',
-	'missrogueflame': 'therog3Hype',
-	'cyaniablu': 'cyanLove',
+	'missrogueflame': 'mrfHype',
 	'tuatime': 'tuaLove',
-	'amalirae': 'amalirHype',
 	'seikachu': 'seiLove',
-	'rahhzay': 'rahhzOMG'
+	'rahhzay': 'rahhzLove',
+	'galaxyaus': 'galaxy86HYPER',
+	'glennangel': 'glennaSweet',
+	'brianricardo': 'brianr1lick'
 }
 
 let hypeMsg = '';

@@ -56,6 +56,9 @@ const updateViewerPoints = function() {
 					console.log(err);
 			   }
 			});
+			theRestClient.on('error', function (err) {
+				console.log('CAUGHT ERROR RUNNING updateViewerPoints()', err.request.options);
+			});
 		})
 		.catch(function(err) {
 			console.log('caught error calling scheduleManager.getLiveUserFromSchedule()');

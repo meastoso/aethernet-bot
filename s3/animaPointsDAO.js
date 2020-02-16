@@ -11,7 +11,7 @@ const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./credentials'); 
 const s3 = new AWS.S3();
 const animaBucket = 'aethernet-anima-backup';
-const configKey = 'anima-patch-5-1';
+const configKey = 'anima-patch-5-2';
 
 let animaCache = {};
 
@@ -70,7 +70,7 @@ getCurrentAnima()
 
 
 // NOTE: The code below is useful when trying to get unique users for stats after the marathon
-getCurrentAnima()
+/*getCurrentAnima()
     .then((animaTotalsObj) => {
         console.log('Successfully current anima at startup...');
         //console.log(animaTotalsObj);
@@ -88,7 +88,7 @@ getCurrentAnima()
     .catch((err) => {
         console.log('Error when trying to get current anima at startup...');
         console.log(err);
-    });
+    });*/
 
 	
 const getCurrentAnimaCache = function() {
