@@ -28,7 +28,7 @@ const getLiveUserFromSchedule = function() {
 				const endTime = new Date(thisEvent.end.dateTime);
 				if (startTime < now && endTime > now) {
 					// once found, return "summary" field which is the twitch streamers channel name that is scheduled to be live right now
-					if (currentLiveUserCached !== thisEvent.summary) {
+					if (currentLiveUserCached !== thisEvent.summary.toLowerCase()) {
 						// the live user has changed, close any open raffles
 						raffleSystem.closeRaffle();
 					}
