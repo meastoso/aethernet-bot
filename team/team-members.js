@@ -3,7 +3,7 @@ const members = {
 	'spofie': 'sofiePog',
 	'pookajutsu': 'pkjPantsu',
 	'josgar': 'josgarPride',
-	'arcaneseamstress': 'arcane2Good',
+	'arcane_arts': 'arcane2Good',
 	'healmeharry': 'hmeHype',
 	'phoenixchao': 'fuganoSing',
 	'meastoso': 'meastoLove',
