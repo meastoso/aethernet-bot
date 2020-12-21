@@ -3,6 +3,7 @@ const theRestClient = new restClient();
 const scheduleManager = require('../schedule/scheduleManager.js');
 const animaPointsDAO = require('../s3/animaPointsDAO.js');
 const testModeManager = require('../twitch-bot/testModeManager.js');
+const team = require('../team/team-members.js');
 
 var viewerPointsMap = {};
 const testMode = testModeManager.isTestMode();
@@ -95,6 +96,29 @@ const getPoints = function(username) {
 	return points;
 }
 
+const getLeaderBoardString = function() {
+	var currentViewPointsMap = animaPointsDAO.getCurrentAnimaCache();
+	var sorted = [];
+	for (var username in currentViewPointsMap) {
+		if (!team.isMember(username) && username !== 'aethernet_bot') {
+			sorted.push([username, currentViewPointsMap[username]]);
+		}
+	}
+	sorted.sort(function(a, b) {
+		return b[1] - a[1];
+	});
+	return "🥇 " + sorted[0][0] + " (" + sorted[0][1] + ")\n" +
+		"🥈 " + sorted[1][0] + " (" + sorted[1][1] + ")\n" +
+		"🥉 " + sorted[2][0] + " (" + sorted[2][1] + ")\n" +
+		"    4⃣ " + sorted[3][0] + " (" + sorted[3][1] + ")\n" +
+		"    5⃣ " + sorted[4][0] + " (" + sorted[4][1] + ")\n" +
+		"    6⃣ " + sorted[5][0] + " (" + sorted[5][1] + ")\n" +
+		"    7⃣ " + sorted[6][0] + " (" + sorted[6][1] + ")\n" +
+		"    8⃣ " + sorted[7][0] + " (" + sorted[7][1] + ")\n" +
+		"    9⃣ " + sorted[8][0] + " (" + sorted[8][1] + ")\n" +
+		"    🔟 " + sorted[9][0] + " (" + sorted[9][1] + ")";
+}
+
 let updateViewerPointsInterval = 900000; // 15-minutes
 if (testMode) {
 	updateViewerPointsInterval = 10000; // 10 seconds for testing
@@ -110,4 +134,5 @@ module.exports = {
 		addAnima: addAnima,
 		getPoints: getPoints,
 		getUpdateIntervalMS: getUpdateIntervalMS,
+	getLeaderBoardString: getLeaderBoardString
 }

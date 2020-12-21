@@ -23,8 +23,10 @@ const buyTickets = function(username, ticketAmount, pointsManager) {
 	var maxTickets = userPointTotal / ticketCostInAnima;
 	if (ticketAmount > maxTickets) {
 		// user requested more tickets than they can afford, just give them max tickets
+		console.log('User ' + username + ' tried buying ' + ticketAmount + ' tickets but maxTickets for this user is: ' + maxTickets);
 		ticketAmount = maxTickets;
 	}
+	console.log('User ' + username + ' has added ' + ticketAmount + ' to the current raffle.')
 	for (let i = 0; i < ticketAmount; i++) {
 		raffleTicketContainer.push(username);
 	}

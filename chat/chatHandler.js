@@ -89,14 +89,14 @@ const handleMsg = function(client, channel, user, message) {
 		 *      !prizes
 		 * ##########################*/
 		else if (message.startsWith("!prizes")) {
-			var responseMsg = "The Aethernet's Patch 5.2 Marathon Event includes so many Giveaways it will make your head spin! Prizes include Mounts, Glamours and Emotes from Mogstation, FFXIV Time Cards and more!";
+			var responseMsg = "The Aethernet's Patch 5.3 Marathon Event includes so many Giveaways it will make your head spin! Prizes include Mounts, Glamours and Emotes from Mogstation, FFXIV Time Cards and more!";
 			client.action(channel, responseMsg);
 		}
         /* ###########################
          *      !schedule
          * ##########################*/
         else if (message.startsWith("!schedule")) {
-            var responseMsg = "The Aethernet's Patch 5.2 marathon schedule can be found on our website! --> https://aethernet.tv <--";
+            var responseMsg = "The Aethernet's Patch 5.3 marathon schedule can be found on our website! --> https://aethernet.tv <--";
             client.action(channel, responseMsg);
         }
 		/* ###########################
@@ -238,14 +238,14 @@ const handleMsg = function(client, channel, user, message) {
          * ##########################*/
         else if (message.startsWith("!live")) {
             const currentLiveUser = scheduleManager.getLiveUserCached();
-            var responseMsg = 'The Aethernet 5.2 Marathon is Live at https://twitch.tv/' + currentLiveUser;
+            var responseMsg = 'The Aethernet 5.3 Marathon is Live at https://twitch.tv/' + currentLiveUser;
             client.say(channel, responseMsg);
         }
         /* ###########################
          *      !currency
          * ##########################*/
         else if (message.startsWith("!currency")) {
-            var responseMsg = 'During the Aethernet Patch 5.2 Marathon earn 1 !anima for every 15 minutes watching the current ' +
+            var responseMsg = 'During the Aethernet Patch 5.3 Marathon earn 1 !anima for every 15 minutes watching the current ' +
 				'!live streamer and spend your !anima on raffle tickets to enter to win our giveaways throughout the marathon!';
             client.say(channel, responseMsg);
         }
@@ -284,7 +284,7 @@ const handleMsg = function(client, channel, user, message) {
         }
 	}
 	catch(error) {
-		console.log("ERROR: " + error);
+		console.log("ERROR in chat handler: " + error);
 	}
 }
 

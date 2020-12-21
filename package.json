@@ -4,7 +4,8 @@
   "description": "Twitch bot used by the Aethernet Stream team on Twitch",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -21,10 +22,12 @@
     "express": "4.16.3",
     "node-rest-client": "3.1.0",
     "twitch-js": "1.2.17",
+    "discord.js": "~12.2.0",
     "google-calendar": "1.3.2",
-    "passport-google-oauth": "1.0.0",
-    "passport": "0.4.0",
-    "passport-oauth2-refresh": "1.1.0",
+    "googleapis": "^66.0.0",
+    "passport-google-oauth": "^2.0.0",
+    "passport": "^0.4.1",
+    "passport-oauth2-refresh": "^2.0.0",
     "readline": "1.3.0",
     "cors": "2.8.5"
   }

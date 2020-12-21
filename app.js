@@ -3,6 +3,7 @@ var cors = require('cors')
 var app = express();
 app.use(cors());
 const anetBot = require('./twitch-bot/anet-bot.js');
+const discordBot = require('./discord-bot/discord-bot');
 const passportManager = require('./passport/passportManager.js');
 const scheduleManager = require('./schedule/scheduleManager.js');
 
@@ -16,7 +17,7 @@ var server = app.listen(port, function () {
 
 app.get('/auth', passportManager.authenticate);
 
-app.get('/auth/callback', 
+app.get('/auth/callback',
   passportManager.callback,
   function(req, res) { 
   	 console.log('in callback function');
@@ -28,8 +29,8 @@ app.get('/auth/callback',
 	});
 
 app.get('/schedule', (req, res) => {
-    const date1 = new Date('February 17, 2020 00:00:00');
-    const date2 = new Date('February 26, 2020 00:00:00');
+    const date1 = new Date('December 8, 2020 00:00:00');
+    const date2 = new Date('December 24, 2020 00:00:00');
     scheduleManager.getAllEventsForRange(date1, date2)
         .then(function(allEvents) {
             res.json(allEvents);

@@ -11,7 +11,7 @@ const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./credentials'); 
 const s3 = new AWS.S3();
 const animaBucket = 'aethernet-anima-backup';
-const configKey = 'anima-patch-5-2';
+const configKey = 'anima-patch-5-4';
 
 let animaCache = {};
 
@@ -56,7 +56,7 @@ const updateCurrentAnima = function(updatedAnimaTotalsObj) {
  ############################################################*/
 getCurrentAnima()
 	.then((animaTotalsObj) => {
-		console.log('Successfully current anima at startup...');
+		console.log('Successfully retrieved current anima at startup...');
 		// console.log(animaTotalsObj);
 		animaCache = animaTotalsObj;
 	})

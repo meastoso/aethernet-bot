@@ -2,20 +2,25 @@
 const members = {
 	'spofie': 'sofiePog',
 	'pookajutsu': 'pkjPantsu',
-	'josgar': 'josgarPride',
-	'arcane_arts': 'arcane2Good',
-	'healmeharry': 'hmeHype',
+	'josgar': 'josgarPuggies',
+	'arcane_arts': 'arcane2Hug',
+	'hupo': 'hupoLove',
 	'phoenixchao': 'fuganoSing',
 	'meastoso': 'meastoLove',
 	'crevlm': 'crevlmHype',
 	'tequilashots1500': 'tequil3Cheers',
 	'missrogueflame': 'mrfHype',
 	'tuatime': 'tuaLove',
-	'seikachu': 'seiLove',
+	'seika': 'seiLove',
 	'rahhzay': 'rahhzLove',
-	'galaxyaus': 'galaxy86HYPER',
+	'galaxyaus': 'glxyHYPER',
 	'glennangel': 'glennaSweet',
-	'brianricardo': 'brianr1lick'
+	'brianricardo': 'brianr1Ayaya',
+	'psirisluno': 'psirisLOL',
+	'chilifarmer': 'chilifHUG',
+	'shleb': 'shlebHYPERS',
+	'darianhart': 'darian5Hart',
+	'deenuglife': 'deenugHype',
 }
 
 let hypeMsg = '';

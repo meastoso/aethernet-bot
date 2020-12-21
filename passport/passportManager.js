@@ -21,6 +21,7 @@ let currentAccessToken = '';
 const strategy = new GoogleStrategy({
     clientID: credentials["google-client-id"],
     clientSecret: credentials["google-client-secret"],
+	projectId: credentials["google-project-id"],
     callbackURL: "http://localhost:3000/auth/callback",
     passReqToCallback: true 
   },
@@ -40,7 +41,7 @@ passport.use(strategy);
 refresh.use(strategy);
 
 const authenticate = passport.authenticate('google', {
-		scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar'],
+		scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar.events'],
 		accessType: 'offline',
 		prompt: 'consent',
 	});
