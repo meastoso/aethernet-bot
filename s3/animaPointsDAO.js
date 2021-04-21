@@ -11,7 +11,7 @@ const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./credentials'); 
 const s3 = new AWS.S3();
 const animaBucket = 'aethernet-anima-backup';
-const configKey = 'anima-patch-5-4';
+const configKey = 'anima-patch-5-5';
 
 let animaCache = {};
 

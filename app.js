@@ -29,8 +29,8 @@ app.get('/auth/callback',
 	});
 
 app.get('/schedule', (req, res) => {
-    const date1 = new Date('December 8, 2020 00:00:00');
-    const date2 = new Date('December 24, 2020 00:00:00');
+    const date1 = new Date('April 3, 2021 00:00:00');
+    const date2 = new Date('April 30, 2021 00:00:00');
     scheduleManager.getAllEventsForRange(date1, date2)
         .then(function(allEvents) {
             res.json(allEvents);
@@ -52,5 +52,37 @@ app.get('/liveUser', (req, res) => {
             console.log(err);
             res.json(err);
         });
+});
+
+app.get('/delete', (req, res) => {
+    const date1 = new Date('April 1, 2021 00:00:00');
+    scheduleManager.deleteOldEventsBeforeDate(date1)
+        .then(function() {
+            res.json("success");
+        })
+        .catch(function(err) {
+            console.log('error deleting dates from schedule manager:');
+            console.log(err);
+            res.json(err);
+        });
+});
+
+app.get('/getEvent', (req, res) => {
+    const meastEventId = "NnM1NjRzZWd2djVuMTJ2ZnRlZTYxZnBhYjEgYWV0aGVybmV0Ym90QG0";
+    const brianEventTest = "NXBsZHZzNjhxbDBkdTgwc2FlNzNucnU3NjEgYWV0aGVybmV0Ym90QG0";
+    const arc = "10ku39tabv0hfkjsmejibhsdb5";
+    scheduleManager.getEvent(arc)
+        .then(function(data) {
+            res.json(data);
+        })
+        .catch(function(err) {
+            console.log('error deleting dates from schedule manager:');
+            console.log(err);
+            res.json(err);
+        });
+});
+
+app.get('/test', (req, res) => {
+    res.json("echo!");
 });
 

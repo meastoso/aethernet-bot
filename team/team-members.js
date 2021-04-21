@@ -21,6 +21,8 @@ const members = {
 	'shleb': 'shlebHYPERS',
 	'darianhart': 'darian5Hart',
 	'deenuglife': 'deenugHype',
+	'paopukomi': 'paopuHype',
+	'ethysasher': 'ethPalm'
 }
 
 let hypeMsg = '';
