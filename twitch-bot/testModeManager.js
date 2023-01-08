@@ -1,5 +1,5 @@
-const testMode = true;
-const betaMode = false;
+const testMode = false;
+const betaMode = true;
 
 /*
 Properties of test mode:

@@ -1,6 +1,6 @@
 const restClient = require('node-rest-client').Client;
 const theRestClient = new restClient();
-const scheduleManager = require('../schedule/scheduleManager.js');
+const scheduleManager2 = require('../schedule/scheduleManager2.js');
 const animaPointsDAO = require('../s3/animaPointsDAO.js');
 const testModeManager = require('../twitch-bot/testModeManager.js');
 const team = require('../team/team-members.js');
@@ -13,7 +13,7 @@ const updateViewerPoints = function() {
 	viewerPointsMap = animaPointsDAO.getCurrentAnimaCache();
 	//var currentLiveChannel = getLiveUserFromSchedule().toLowerCase();
 	//const currentLiveChannel = scheduleManager.getLiveUserFromSchedule().toLowerCase();
-	scheduleManager.getLiveUserFromSchedule()
+	scheduleManager2.getLiveUserFromSchedule()
 		.then(function(currentLiveChannel) {
 			if (currentLiveChannel === null) {
 				return; // null means we didn't find a valid current live channel but didn't catch errors calling Google API
@@ -48,7 +48,7 @@ const updateViewerPoints = function() {
 					}
 					if (testMode) {
 						console.log('finished point updates, map is:');
-						console.log(viewerPointsMap);	
+						console.log(viewerPointsMap);
 					}
 					animaPointsDAO.updateCurrentAnima(viewerPointsMap);
 				}

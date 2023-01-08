@@ -1,6 +1,7 @@
 // const pointsManager = require('../points/pointsManager.js');
 
 var raffleOpen = false;
+var raffleOpenUser = '';
 var drawTicketUsed = false;
 
 // helper function
@@ -52,7 +53,7 @@ const drawWinnerAndReturnMessage = function() {
 	if (percentChance == 0) {
 		percentChance = 1;
 	}
-	var responseMsg = "With " + totalEntries + " total entries and " + percentChance + "% chance of winning, CONGRATULATIONS " + winnerUsername + " !";
+	var responseMsg = "With " + totalEntries + " total entries and " + percentChance + "% chance of winning, CONGRATULATIONS " + winnerUsername + "! Aethernet streamer please run '!raffle end' to prepare raffle system for next user.";
 	drawTicketUsed = true;
 	return responseMsg;
 }
@@ -65,14 +66,20 @@ const hasDrawTicketBeenUsed = function() {
 	return drawTicketUsed;
 }
 
-const openRaffle = function() {
+const openRaffle = function(username) {
 	raffleOpen = true;
+	raffleOpenUser = username;
 	drawTicketUsed = false; // reset this
 }
 
 const closeRaffle = function() {
 	raffleTicketContainer = []; // empty out the raffle container after drawing the winner
+	raffleOpenUser = 'nobody';
 	raffleOpen = false;
+}
+
+const getOpenRaffleUser = function() {
+	return raffleOpenUser;
 }
 
 // public methods
@@ -82,5 +89,7 @@ module.exports = {
 		isRaffleOpen: isRaffleOpen,
 		openRaffle: openRaffle,
 		closeRaffle: closeRaffle,
-		hasDrawTicketBeenUsed: hasDrawTicketBeenUsed
+		hasDrawTicketBeenUsed: hasDrawTicketBeenUsed,
+		getOpenRaffleUser: getOpenRaffleUser,
+		getRandomInt: getRandomInt
 }

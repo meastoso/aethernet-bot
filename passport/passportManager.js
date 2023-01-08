@@ -15,7 +15,7 @@ catch (err) {
 	console.log(err);
 }
 
-const refreshToken = credentials["refresh-token"];
+let localRefreshToken = credentials["refresh-token"];
 let currentAccessToken = '';
 
 const strategy = new GoogleStrategy({
@@ -28,10 +28,15 @@ const strategy = new GoogleStrategy({
   function(req, accessToken, refreshToken, params, profile, done) {
     // find expiry_date so it can be save in the database, along with access and refresh token
     //const expiry_date = moment().add(params.expires_in, "s").format("X");
-    console.log('access token is:');
+    console.log('strategy access token is:');
     console.log(accessToken);
-    console.log('refresh token is:');
+    console.log('strategy refresh token is:');
     console.log(refreshToken);
+    // this function is executed on auth callback
+	  // TODO: Update the refresh token in credentials file
+    if (localRefreshToken != refreshToken) {
+    	localRefreshToken = refreshToken;
+	}
     return done(null, profile);
   }
 );
@@ -53,7 +58,7 @@ const getPassport = function() {
 }
 
 const refreshAccessToken = function() {
-	refresh.requestNewAccessToken('google', refreshToken, function(err, accessToken, refreshToken) {
+	refresh.requestNewAccessToken('google', localRefreshToken, function(err, accessToken, refreshToken) {
 	  // You have a new access token, store it in the user object,
 	  // or use it to make a new request.
 	  // `refreshToken` may or may not exist, depending on the strategy you are using.

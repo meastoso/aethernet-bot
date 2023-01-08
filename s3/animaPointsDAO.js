@@ -8,10 +8,12 @@ or in the "license" file accompanying this file. This file is distributed on an 
 */
 
 const AWS = require('aws-sdk');
+const {isBetaMode, isTestMode} = require("../twitch-bot/testModeManager");
 AWS.config.loadFromPath('./credentials'); 
 const s3 = new AWS.S3();
 const animaBucket = 'aethernet-anima-backup';
-const configKey = 'anima-patch-5-5';
+const configKey = 'anima-patch-6-3';
+const emotesJsonKey = 'emotes.json';
 
 let animaCache = {};
 
@@ -65,12 +67,18 @@ getCurrentAnima()
 		console.log(err);
 	});
 
+/** ***************************************************************************
+ * TODO: DO NOT GO LIVE WITH THIS UNCOMMENTED
+ ****************************************************************************/
 // console.log('RESETTING ALL ANIMA RIGHT NOW!');
-// updateCurrentAnima({});
+// if (isBetaMode() && isTestMode()) {
+// 	updateCurrentAnima({});
+// }
+
 
 
 // NOTE: The code below is useful when trying to get unique users for stats after the marathon
-/*getCurrentAnima()
+getCurrentAnima()
     .then((animaTotalsObj) => {
         console.log('Successfully current anima at startup...');
         //console.log(animaTotalsObj);
@@ -88,16 +96,34 @@ getCurrentAnima()
     .catch((err) => {
         console.log('Error when trying to get current anima at startup...');
         console.log(err);
-    });*/
+    });
 
 	
 const getCurrentAnimaCache = function() {
 	return animaCache;
 }
 
+const getEmotesJson = function() {
+	return new Promise((resolve, reject) => {
+		let params = {Bucket: animaBucket, Key: emotesJsonKey};
+		s3.getObject(params, function(err, data) {
+			if (err) {
+				console.log('Failed to get the emote set from S3...');
+				console.log(err);
+				reject(err);
+			} else {
+				console.log('Successfully retrieved emote set from S3...');
+				resolve(JSON.parse(data.Body.toString()));
+				console.log("RESOLVED THE ITEM");
+			}
+		});
+	});
+}
+
 
 // public methods
 module.exports = {
-		getCurrentAnimaCache: getCurrentAnimaCache,
-		updateCurrentAnima: updateCurrentAnima,
+	getCurrentAnimaCache: getCurrentAnimaCache,
+	updateCurrentAnima: updateCurrentAnima,
+	getEmotesJson: getEmotesJson
 }

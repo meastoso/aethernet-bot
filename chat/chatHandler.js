@@ -2,7 +2,7 @@ const team = require('../team/team-members.js');
 const testModeManager = require('../twitch-bot/testModeManager.js');
 const pointsManager = require('../points/pointsManager.js');
 const raffleSystem = require('../raffle/raffleSystem.js');
-const scheduleManager = require('../schedule/scheduleManager.js');
+const scheduleManager2 = require('../schedule/scheduleManager2.js');
 
 const testMode = testModeManager.isTestMode();
 const betaMode = testModeManager.isBetaMode();
@@ -26,9 +26,9 @@ const handleMsg = function(client, channel, user, message) {
 		/* ###########################
 		 *      !hype
 		 * ##########################*/
-		else if (message.startsWith("!hype") && !testMode && !betaMode) {
+		else if (message.startsWith("!hype") && !betaMode) {
 			const hypeMsg = team.getHypeStr();
-			var responseMsg = hypeMsg + hypeMsg;
+			var responseMsg = hypeMsg;
          client.say(channel, responseMsg);
 		}
 		/* ###########################
@@ -36,7 +36,7 @@ const handleMsg = function(client, channel, user, message) {
 		 * ##########################*/
 		else if (message.startsWith("!testhype")) {
 			const hypeMsg = team.getHypeStr();
-			var responseMsg = hypeMsg + hypeMsg;
+			var responseMsg = hypeMsg;
          client.say(channel, responseMsg);
 		}
 		/* ###########################
@@ -89,14 +89,14 @@ const handleMsg = function(client, channel, user, message) {
 		 *      !prizes
 		 * ##########################*/
 		else if (message.startsWith("!prizes")) {
-			var responseMsg = "The Aethernet's Patch 5.5 Marathon Event includes so many Giveaways it will make your head spin! Prizes include Mounts, Glamours and Emotes from Mogstation, FFXIV Time Cards and more!";
+			var responseMsg = "The Aethernet's Marathon Event includes so many Giveaways it will make your head spin! Prizes include Mounts, Glamours and Emotes from Mogstation, FFXIV Time Cards and more!";
 			client.action(channel, responseMsg);
 		}
         /* ###########################
          *      !schedule
          * ##########################*/
         else if (message.startsWith("!schedule")) {
-            var responseMsg = "The Aethernet's Patch 5.5 marathon schedule can be found on our website! --> https://aethernet.tv <--";
+            var responseMsg = "The Aethernet's marathon schedule can be found on our website! --> https://aethernet.tv <--";
             client.action(channel, responseMsg);
         }
 		/* ###########################
@@ -106,6 +106,7 @@ const handleMsg = function(client, channel, user, message) {
 			// figure out if user is starting a raffle or ending a raffle
 			const isRaffleOpen = raffleSystem.isRaffleOpen();
 			const drawTicketUsed = raffleSystem.hasDrawTicketBeenUsed();
+			const openRaffleUser = raffleSystem.getOpenRaffleUser();
 			var cmdModifier = message.split('!raffle ')[1];
 			if (cmdModifier == undefined || cmdModifier == null || (cmdModifier.toLowerCase() != 'start' && cmdModifier.toLowerCase() != 'end')) {
 				var responseMsg = "Incorrect usage of the !raffle command. Please include 'start' or 'end' after the command, i.e. !raffle start";
@@ -114,7 +115,7 @@ const handleMsg = function(client, channel, user, message) {
 			}
 			// if start, check that a raffle isn't currently in progress
 			if (cmdModifier.toLowerCase() == 'start' && isRaffleOpen) {
-				var responseMsg = "A raffle is already open, please end the existing raffle before beginning a new one.";
+				var responseMsg = "A raffle is already open from user " + openRaffleUser + ", please end the existing raffle before beginning a new one.";
 				client.say(channel, responseMsg);
 				return;
 			}
@@ -126,7 +127,7 @@ const handleMsg = function(client, channel, user, message) {
 			}
 			// if end and streamer hasn't drawn a winner, prevent this from accidently ending before they mean to
 			if (cmdModifier.toLowerCase() == 'end' && !drawTicketUsed) {
-				var responseMsg = "To prevent irreversible anima loss you cannot end a raffle before using !drawticket to select and announce a winner. If this was intentional please contact @meastoso.";
+				var responseMsg = "An existing raffle is still open from user " + openRaffleUser + " and a winner has not been drawn. To prevent irreversible anima loss you cannot end a raffle before using !drawticket to select and announce a winner. If this was intentional please contact @meastoso.";
 				client.say(channel, responseMsg);
 				return;
 			}
@@ -136,7 +137,7 @@ const handleMsg = function(client, channel, user, message) {
 				var responseMsg = username + " has started a raffle giveaway! Buy one or more raffle tickets to enter using the command !buytickets <amount>. Each ticket costs 1 anima.";
 				client.say(channel, responseMsg);
 				//isRaffleOpen = true;
-				raffleSystem.openRaffle();
+				raffleSystem.openRaffle(username);
 			}
 			else if (cmdModifier.toLowerCase() == 'end') {
 				if (!isRaffleOpen) {
@@ -200,7 +201,7 @@ const handleMsg = function(client, channel, user, message) {
 			client.say(channel, successResponseMsg);
 		}
 		/* ###########################
-		 *      !testbuytickets <amount>
+		 *      !testbuytickets <testuser> <amount>
 		 * ##########################*/
 		else if (username === 'meastoso' && message.startsWith("!testbuytickets")) {
 			const isRaffleOpen = raffleSystem.isRaffleOpen();
@@ -237,15 +238,15 @@ const handleMsg = function(client, channel, user, message) {
          *      !live
          * ##########################*/
         else if (message.startsWith("!live")) {
-            const currentLiveUser = scheduleManager.getLiveUserCached();
-            var responseMsg = 'The Aethernet 5.5 Marathon is Live at https://twitch.tv/' + currentLiveUser;
+            const currentLiveUser = scheduleManager2.getLiveUserCached();
+            var responseMsg = 'The Aethernet Marathon is Live at https://twitch.tv/' + currentLiveUser;
             client.say(channel, responseMsg);
         }
         /* ###########################
          *      !currency
          * ##########################*/
         else if (message.startsWith("!currency")) {
-            var responseMsg = 'During the Aethernet Patch 5.5 Marathon earn 1 !anima for every 15 minutes watching the current ' +
+            var responseMsg = 'During the Aethernet Marathon earn 1 !anima for every 15 minutes watching the current ' +
 				'!live streamer and spend your !anima on raffle tickets to enter to win our giveaways throughout the marathon!';
             client.say(channel, responseMsg);
         }

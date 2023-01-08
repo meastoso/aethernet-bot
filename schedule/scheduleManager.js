@@ -14,11 +14,17 @@ const theOptions = {
 }
 const getLiveUserFromSchedule = function() {
 	const accessToken = passportManager.getCurrentAccessToken();
-	// console.log("access token is:");
-	// console.log(accessToken);
+	console.log("access token is:");
+	console.log(accessToken);
+	if (!accessToken) {
+		console.log("No google passport accessToken present; refreshing credentials...");
+		passportManager.refreshAccessToken();
+	}
 	const google_calendar = new gcal.GoogleCalendar(accessToken);
+	console.log("got the google_calendar item");
 	return new Promise((resolve, reject) => {
 		// fetch all events from google calendar
+		console.log("calling events.list");
 		google_calendar.events.list(calendarId, theOptions, function(err, data) {
 			if (err) {
 				console.log("ERROR in schedule manager: ");
@@ -27,8 +33,8 @@ const getLiveUserFromSchedule = function() {
 				//reject(err);
 				return;
 			}
-			// console.log("number of schedule item: " + data.items.length);
-			// loop through events and find which event has a start and end time that wraps RIGHT NOW		
+			console.log("number of schedule item: " + data.items.length);
+			// loop through events and find which event has a start and end time that wraps RIGHT NOW
 			for (let i = 0; i < data.items.length; i++) {
 				const thisEvent = data.items[i];
 				const now = new Date();
@@ -43,7 +49,9 @@ const getLiveUserFromSchedule = function() {
 					// once found, return "summary" field which is the twitch streamers channel name that is scheduled to be live right now
 					if (currentLiveUserCached !== thisEvent.summary.toLowerCase()) {
 						// the live user has changed, close any open raffles
-						raffleSystem.closeRaffle();
+						if (raffleSystem.isRaffleOpen() && raffleSystem.hasDrawTicketBeenUsed()) {
+							raffleSystem.closeRaffle();
+						}
 					}
 					if (thisEvent && thisEvent.summary) {
 						currentLiveUserCached = thisEvent.summary.toLowerCase();
@@ -171,10 +179,10 @@ const getEvent = async function(eventId) {
 }
 
 // public methods
-module.exports = {
-	getLiveUserFromSchedule: getLiveUserFromSchedule,
-	getLiveUserCached: getLiveUserCached,
-    getAllEventsForRange: getAllEventsForRange,
-	deleteOldEventsBeforeDate: deleteOldEventsBeforeDate,
-	getEvent: getEvent
-}
+// module.exports = {
+// 	getLiveUserFromSchedule: getLiveUserFromSchedule,
+// 	getLiveUserCached: getLiveUserCached,
+//     getAllEventsForRange: getAllEventsForRange,
+// 	deleteOldEventsBeforeDate: deleteOldEventsBeforeDate,
+// 	getEvent: getEvent
+// }
